@@ -1,5 +1,6 @@
 #! /usr/bin/env python2
 # -*- encoding:utf-8 -*-
+
 from ase import Atoms
 from ase.calculators.lj import LennardJones
 from ase.visualize import view
@@ -30,7 +31,7 @@ def lj(r1, r2 = None):
     elif (type(r1) in [list, np.ndarray, np.array] 
           and len(r1) > 1):
         return [ pot(r) for r in r1 ]
-    # Handle a simple distance
+    # Handle a simple distance 
     elif type(r1) in [float, int] or len(r1) == 1:
         return pot(r1)
     # When in doubt, complain on the user
@@ -82,7 +83,7 @@ my_atoms = np.array(pos)
 
 # Setup ASE
 ase_atoms = Atoms('ArArArAr', positions=my_atoms)
-calc = LennardJones(epsilon=epsilon, sigma=sigma)
+calc = LennardJones(epsilon=epsilon, sigma=sigma, rc=100)
 ase_atoms.set_calculator(calc)
 
 '''
