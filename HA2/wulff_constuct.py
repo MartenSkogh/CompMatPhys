@@ -7,7 +7,7 @@ from ase.units import J, m
 from os import listdir
 from pprint import pprint
 
-path = '../hebbe_import/surface_energies'
+path = '../hebbe_import/surface_energies/'
 
 E_bulk = -3.73632531761 # eV
 
@@ -16,11 +16,11 @@ E_111 = []
 
 for facet in ['100', '111']:
     with open('surface_energy_{}.txt'.format(facet), 'w') as f:
-        for N in range(1,14, 2):
-            slab = read('fcc{}_slab-{}.txt'.format(facet, N))
+        for N in range(3,22, 3):
+            slab = read(path + 'fcc{}_slab-{}.txt'.format(facet, N))
             cell = slab.get_cell()
             area = np.linalg.norm(np.cross(cell[0], cell[1]))
-            sigma = (1/2*area)*(slab.get_potential_energy() - N*E_bulk)
+            sigma = 1/(2*area)*(slab.get_potential_energy() - N*E_bulk)
             f.write('{} {}\n'.format(N, sigma/(J/m**2)))
 
             if facet is '100':
@@ -28,9 +28,9 @@ for facet in ['100', '111']:
             if facet is '111':
                 E_111.append(sigma)
 
-            print('{}, {}: {}'.format(facet, N, slab.get_potential_energy()))
+            print('{}, {}: {}'.format(facet, N, simga))
 
-for i in [1000, 10000, 100000]:
+for i in [1000, 10000]:
     atoms = wulff_construction('Al',
                                surfaces=[(1,0,0), (1,1,1)],
                                energies=[E_100[-1], E_111[-1]],
