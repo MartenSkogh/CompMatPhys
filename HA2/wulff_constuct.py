@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import numpy as np
+import matplotlib.pyplot as plt
 from ase.io import read
 from ase.cluster.wulff import wulff_construction
 from ase.visualize import view
@@ -11,12 +12,13 @@ path = '../hebbe_import/surface_energies/'
 
 E_bulk = -3.73632531761 # eV
 
+N_list = range(3,22, 3)
 E_100 = []
 E_111 = []
 
 for facet in ['100', '111']:
     with open('surface_energy_{}.txt'.format(facet), 'w') as f:
-        for N in range(3,22, 3):
+        for N in N_list:
             slab = read(path + 'fcc{}_slab-{}.txt'.format(facet, N))
             cell = slab.get_cell()
             area = np.linalg.norm(np.cross(cell[0], cell[1]))
@@ -28,7 +30,7 @@ for facet in ['100', '111']:
             if facet is '111':
                 E_111.append(sigma)
 
-            print('{}, {}: {}'.format(facet, N, simga))
+            print('{}, {}: {}'.format(facet, N, sigma))
 
 for i in [1000, 10000]:
     atoms = wulff_construction('Al',
@@ -37,6 +39,10 @@ for i in [1000, 10000]:
                                size=i,
                                structure='fcc',
                                rounding='below')
-    atoms.center(vacuum=0)
+    atoms.center(vacuum=10.0)
     view(atoms)
 
+plt.plot(N_list, E_100)
+plt.plot(N_list, E_111)
+plt.grid(True)
+plt.show()
