@@ -1,0 +1,19 @@
+* Simulation parameters
+** Basis
+Use plane waves, they give the best accuracy according to lecture notes.
+
+** k
+Check convergence
+
+** Cross correlation function
+Use PBE, I don't know why really
+
+** Plan wave cut-off
+Check convergence for different values.
+
+The simulation won't run, only gives me the error 'You have a weird unit cell!'. I think the error comes when you have a certain cut-off energies, there might be a k-dependence here that fucks everything up as well.
+
+** Lattice parameter
+Start with a table value for the lattice parameter then calculate a more accurate value.
+
+
