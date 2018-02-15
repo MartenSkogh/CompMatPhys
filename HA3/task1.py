@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
 import numpy as np
 from scipy.linalg import eig
 from pprint import pprint
@@ -50,7 +52,7 @@ def norm_C(C, S):
 
     return C/np.sqrt(norm_factor)
 
-def calc_E(S,C,Q,h):
+def calc_E(S, C, Q, h):
     E = 0
     F = np.empty((4,4))
     for p in range(4):
@@ -73,6 +75,12 @@ def calc_E(S,C,Q,h):
                     E += C[p]*C[q]*C[r]*C[s]*Q[p][q][r][s]
 
     return E, C
+
+def xi(r, a):
+    return np.exp(-1*a*r**2)
+
+def phi(r, C, a):
+    return sum(C*xi(r, a))
 
 # Starting values
 S = generate_S(alpha)
@@ -108,7 +116,31 @@ while not small_enough:
         break
 
 
-
+plt.figure(1)
 plt.plot(energies, 'ro')
 plt.plot(energies)
+
+R = np.linspace(-1,1,100)
+wv = [phi(r, C, alpha) for r in R]
+plt.figure(2)
+plt.plot(R, wv)
+
+X = np.linspace(-1, 1, 100)
+Y = np.linspace(-1, 1, 100)
+X, Y = np.meshgrid(X, Y)
+
+
+Z = np.empty((100,100))
+
+i = j = 0
+for x, i in zip(X[0,:], range(100)):
+    for y, j in zip(Y[:,0], range(100)):
+        #print("x: {}".format(x))
+        #print("y: {}".format(y))
+        Z[i][j] = phi(np.sqrt(x**2 + y**2), C, alpha)
+
+surf_fig = plt.figure(3)
+ax = surf_fig.add_subplot(111, projection='3d')
+ax.plot_surface(X, Y, Z, cmap=cm.viridis)
+
 plt.show()
