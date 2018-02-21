@@ -19,10 +19,11 @@ for i, j in zip(range(len(energies) - 1), range(1, len(energies))):
     diffs.append(energies[j]-energies[i])
 
 plt.figure(1)
-plt.xlabel('Cut-off energy [eV]')
-plt.ylabel('k [Å^⁻1]')
+plt.xlabel('Number of k-points')
+plt.ylabel('Cut-off energy [eV]')
 plt.plot(ks, energies)
 plt.plot(ks, energies,'ro')
 plt.grid(True)
 
+plt.savefig('images/k-points_PW_dzt.png')
 plt.show()

@@ -20,4 +20,4 @@ a = (4*v0)**(1/3) # there are 4 atoms per unit cell in an fcc
 print(a)
 
 eos.plot()
-#eos.plot('Al-eos.png')
+eos.plot('images/Al-eos.png')
